@@ -12,7 +12,7 @@ win = pygame.display.set_mode(size)
 pygame.display.set_caption("First game")
 
 # Object properties
-x = 50
+x = 400
 y = 400
 width = 40
 height = 60
@@ -20,7 +20,7 @@ x_vel = 0
 y_vel = 0
 
 # Acceleration
-initial_burst_momentum = 0.3
+initial_burst_momentum = 0.4
 de_acceleration = 0.1
 min_acceleration = 0.1
 friction = 1.05
@@ -57,23 +57,26 @@ while run:
     # Move left
     if keys[pygame.K_a] and not keys[pygame.K_d]:
         if x_vel > -2:
-            if x_vel < 0:
-                x_vel -= (initial_burst_momentum * de_acceleration **
-                          (-1 * x_vel)) + min_acceleration
+            if x_vel >= 0:
+                acceleration = (initial_burst_momentum *
+                                de_acceleration ** (x_vel)) + min_acceleration
+                x_vel -= acceleration
             else:
-                x_vel -= (initial_burst_momentum * de_acceleration **
-                          (x_vel)) + min_acceleration
+                acceleration = (initial_burst_momentum *
+                                de_acceleration ** (-1 * x_vel)) + min_acceleration
+                x_vel -= acceleration
             print(x_vel)
-
     # Move right
     if keys[pygame.K_d] and not keys[pygame.K_a]:
         if x_vel < 2:
-            if x_vel > 0:
-                x_vel += (initial_burst_momentum * de_acceleration **
-                          x_vel) + min_acceleration
+            if x_vel <= 0:
+                acceleration = (initial_burst_momentum *
+                                de_acceleration ** (-1 * x_vel)) + min_acceleration
+                x_vel += acceleration
             else:
-                x_vel += (initial_burst_momentum * de_acceleration **
-                          x_vel) + min_acceleration
+                acceleration = (initial_burst_momentum *
+                                de_acceleration ** (x_vel)) + min_acceleration
+                x_vel += acceleration
             print(x_vel)
 
     # Render screen
