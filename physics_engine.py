@@ -26,14 +26,14 @@ min_acceleration = 0.1
 friction = 1.05
 
 # Object atributes
-speed = 2
+speed = 4
 
 run = True
 while run:
     # Event quit game
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = Fals
+            run = False
 
     # Physics engine
     if not x_vel == 0:
@@ -46,6 +46,8 @@ while run:
         x_vel -= (friction ** x_vel) - 1
     if x_vel > 0 and not keys[pygame.K_a]:
         x_vel += (friction ** (-1 * x_vel)) - 1
+
+    # Hitbox within perimeter
     if x < 0:
         x = 0
     if x > size[1]-50:
@@ -56,7 +58,7 @@ while run:
 
     # Move left
     if keys[pygame.K_a] and not keys[pygame.K_d]:
-        if x_vel > -2:
+        if x_vel > -speed:
             if x_vel >= 0:
                 acceleration = (initial_burst_momentum *
                                 de_acceleration ** (x_vel)) + min_acceleration
@@ -65,10 +67,11 @@ while run:
                 acceleration = (initial_burst_momentum *
                                 de_acceleration ** (-1 * x_vel)) + min_acceleration
                 x_vel -= acceleration
+            # print(acceleration)
             print(x_vel)
     # Move right
     if keys[pygame.K_d] and not keys[pygame.K_a]:
-        if x_vel < 2:
+        if x_vel < speed:
             if x_vel <= 0:
                 acceleration = (initial_burst_momentum *
                                 de_acceleration ** (-1 * x_vel)) + min_acceleration
@@ -77,6 +80,7 @@ while run:
                 acceleration = (initial_burst_momentum *
                                 de_acceleration ** (x_vel)) + min_acceleration
                 x_vel += acceleration
+            # print(acceleration)
             print(x_vel)
 
     # Render screen
